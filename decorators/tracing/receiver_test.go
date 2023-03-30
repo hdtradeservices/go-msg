@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 	"go.opencensus.io/trace"
 	"go.opencensus.io/trace/propagation"
 )

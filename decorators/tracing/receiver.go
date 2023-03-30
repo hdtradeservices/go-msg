@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 	"go.opencensus.io/trace"
 	"go.opencensus.io/trace/propagation"
 )

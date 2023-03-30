@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	msg "github.com/zerofox-oss/go-msg"
+	msg "github.com/hdtradeservices/go-msg"
 )
 
 const expected = "hello world"
