@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/zerofox-oss/go-msg"
-	"github.com/zerofox-oss/go-msg/backends/mem"
+	"github.com/hdtradeservices/go-msg"
+	"github.com/hdtradeservices/go-msg/backends/mem"
 )
 
 // ConcurrentReceiver writes to an channel upon consumption of a Message.
@@ -83,9 +83,10 @@ func TestServer_Serve(t *testing.T) {
 	}
 	defer close(srv.C)
 
+	ctx := context.Background()
 	outputChannel := make(chan struct{})
 	go func() {
-		srv.Serve(&ConcurrentReceiver{
+		srv.Serve(ctx, &ConcurrentReceiver{
 			t: t,
 			C: outputChannel,
 		})
@@ -121,8 +122,9 @@ func TestServer_ServeConcurrency(t *testing.T) {
 	defer close(srv.C)
 
 	outputChannel := make(chan struct{})
+	ctx := context.Background()
 	go func() {
-		srv.Serve(&ConcurrentReceiver{
+		srv.Serve(ctx, &ConcurrentReceiver{
 			t: t,
 			C: outputChannel,
 		})
@@ -157,8 +159,9 @@ func TestServer_ServeCanRetryMessages(t *testing.T) {
 	defer close(srv.C)
 
 	outputChannel := make(chan struct{})
+	ctx := context.Background()
 	go func() {
-		srv.Serve(&RetryReceiver{
+		srv.Serve(ctx, &RetryReceiver{
 			t: t,
 			C: outputChannel,
 
@@ -206,7 +209,8 @@ func TestServer_ShutdownContextTimeoutExceeded(t *testing.T) {
 	})
 	srv.C <- message
 
-	if err := srv.Serve(receiver); err != msg.ErrServerClosed {
+	ctx := context.Background()
+	if err := srv.Serve(ctx, receiver); err != msg.ErrServerClosed {
 		t.Fatalf("expected %v, got %v", msg.ErrServerClosed, err)
 	}
 

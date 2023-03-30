@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/zerofox-oss/go-msg"
-	"github.com/zerofox-oss/go-msg/backends/mem"
+	"github.com/hdtradeservices/go-msg"
+	"github.com/hdtradeservices/go-msg/backends/mem"
 )
 
 func TestMessageWriter_Attributes(t *testing.T) {

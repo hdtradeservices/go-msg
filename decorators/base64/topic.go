@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"sync"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 )
 
 // Encoder wraps a topic with another which base64-encodes a Message.

@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/zerofox-oss/go-msg"
-	"github.com/zerofox-oss/go-msg/backends/mem"
+	"github.com/hdtradeservices/go-msg"
+	"github.com/hdtradeservices/go-msg/backends/mem"
 )
 
 func Example_primitives() {
+	ctx := context.Background()
 	c1 := make(chan *msg.Message, 10)
 	c2 := make(chan *msg.Message, 10)
 	c3 := make(chan *msg.Message, 10)
@@ -35,7 +36,7 @@ func Example_primitives() {
 			}
 			return nil
 		})
-		srv1.Serve(splitFunc)
+		srv1.Serve(ctx, splitFunc)
 	}()
 
 	// perform some analysis on each message
@@ -60,7 +61,7 @@ func Example_primitives() {
 			w.Write(body)
 			return w.Close()
 		})
-		srv2.Serve(analyzeFunc)
+		srv2.Serve(ctx, analyzeFunc)
 	}()
 
 	messages := [][]byte{
