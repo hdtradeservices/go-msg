@@ -5,8 +5,8 @@ import (
 	"context"
 	"testing"
 
-	msg "github.com/zerofox-oss/go-msg"
-	"github.com/zerofox-oss/go-msg/backends/mem"
+	msg "github.com/hdtradeservices/go-msg"
+	"github.com/hdtradeservices/go-msg/backends/mem"
 )
 
 func TestEncoder(t *testing.T) {

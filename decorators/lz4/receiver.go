@@ -3,8 +3,8 @@ package lz4
 import (
 	"context"
 
+	"github.com/hdtradeservices/go-msg"
 	"github.com/pierrec/lz4/v4"
-	"github.com/zerofox-oss/go-msg"
 )
 
 // Decoder wraps a msg.Receiver with lz4 decoding functionality.

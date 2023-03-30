@@ -6,7 +6,7 @@ import (
 
 	"github.com/pierrec/lz4/v4"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 )
 
 // Encoder wraps a topic with another which lz4-encodes a Message.

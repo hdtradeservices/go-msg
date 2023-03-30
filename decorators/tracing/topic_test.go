@@ -5,8 +5,8 @@ import (
 	"encoding/base64"
 	"testing"
 
-	msg "github.com/zerofox-oss/go-msg"
-	"github.com/zerofox-oss/go-msg/backends/mem"
+	msg "github.com/hdtradeservices/go-msg"
+	"github.com/hdtradeservices/go-msg/backends/mem"
 	"go.opencensus.io/trace"
 	"go.opencensus.io/trace/propagation"
 	"go.opencensus.io/trace/tracestate"
