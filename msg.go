@@ -129,7 +129,7 @@ type Server interface {
 	//
 	// Serve() should continue to listen until Shutdown is called on
 	// the Server.
-	Serve(Receiver) error
+	Serve(context.Context, Receiver) error
 
 	// Shutdown gracefully shuts down the Server by letting any messages in
 	// flight finish processing.  If the provided context cancels before
