@@ -1,4 +1,4 @@
-module github.com/zerofox-oss/go-msg
+module github.com/hdtradeservices/go-msg
 
 go 1.12
 
