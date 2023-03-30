@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 )
 
 // Server subscribes to a channel and listens for Messages.
@@ -32,7 +32,7 @@ var _ msg.Server = &Server{}
 
 // Serve always returns a non-nil error.
 // After Shutdown, the returned error is ErrServerClosed
-func (s *Server) Serve(r msg.Receiver) error {
+func (s *Server) Serve(ctx context.Context, r msg.Receiver) error {
 	for {
 		select {
 		case <-s.listenerCtx.Done():

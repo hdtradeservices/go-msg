@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 )
 
 // Decoder wraps a msg.Receiver with base64 decoding functionality.

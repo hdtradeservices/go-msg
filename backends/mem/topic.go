@@ -5,7 +5,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/zerofox-oss/go-msg"
+	"github.com/hdtradeservices/go-msg"
 )
 
 // Topic publishes Messages to a channel.
