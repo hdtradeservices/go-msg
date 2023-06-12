@@ -101,6 +101,29 @@ type Receiver interface {
 	Receive(context.Context, *Message) error
 }
 
+// SafeReceiver is a wrapper for any Receiver that will recover from any panic
+// and instead return an error. This can be used to prevent a single message
+// from tanking the entire process and thereby disrupting other workers.
+type SafeReceiver struct {
+	r Receiver
+}
+
+// NewSafeReceiver returns a new SafeReceiver wrapping the provided Receiver.
+func NewSafeReceiver(r Receiver) *SafeReceiver {
+	return &SafeReceiver{r: r}
+}
+
+// Receive calls the underlying Receiver's Receive method and recovers from
+// any panic, returning an error instead.
+func (sr *SafeReceiver) Receive(ctx context.Context, m *Message) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = errors.New("panic recovered in event receiver: " + r.(string))
+		}
+	}()
+	return sr.r.Receive(ctx, m)
+}
+
 // The ReceiverFunc is an adapter to allow the use of ordinary functions
 // as a Receiver. ReceiverFunc(f) is a Receiver that calls f.
 type ReceiverFunc func(context.Context, *Message) error
