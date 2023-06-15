@@ -47,7 +47,8 @@ type Message struct {
 
 // WithBody creates a new Message with the given io.Reader as a Body
 // containing the parent's Attributes.
-// 	p := &Message{
+//
+//	p := &Message{
 //		Attributes: Attributes{},
 //		Body: strings.NewReader("hello world"),
 //	}
@@ -118,7 +119,7 @@ func NewSafeReceiver(r Receiver) *SafeReceiver {
 func (sr *SafeReceiver) Receive(ctx context.Context, m *Message) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = errors.New("panic recovered in event receiver: " + r.(string))
+			err = errors.New("panic recovered in event receiver")
 		}
 	}()
 	return sr.r.Receive(ctx, m)
