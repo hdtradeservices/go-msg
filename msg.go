@@ -6,6 +6,9 @@ import (
 	"errors"
 	"io"
 	"net/textproto"
+
+	"github.com/hdtradeservices/zapctx/zapctx"
+	"go.uber.org/zap"
 )
 
 // Attributes represent the key-value metadata for a Message.
@@ -117,8 +120,10 @@ func NewSafeReceiver(r Receiver) *SafeReceiver {
 // Receive calls the underlying Receiver's Receive method and recovers from
 // any panic, returning an error instead.
 func (sr *SafeReceiver) Receive(ctx context.Context, m *Message) (err error) {
+	logger := zapctx.Extract(ctx)
 	defer func() {
 		if r := recover(); r != nil {
+			logger.Error("panic recovered in event receiver", zap.Any("panic", r))
 			err = errors.New("panic recovered in event receiver")
 		}
 	}()
