@@ -2,13 +2,10 @@ PACKAGES=$(shell go list ./...)
 
 all: lint test
 
-init: tools
-	GO111MODULE=on go mod vendor
-
-lint: init
+lint:
 	golangci-lint run ./...
 
-test: init
+test:
 	go test -race -v ./...
 
 tools:
