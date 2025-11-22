@@ -11,9 +11,9 @@ import (
 
 func Receiver(next msg.Receiver) msg.Receiver {
 	return msg.ReceiverFunc(func(ctx context.Context, m *msg.Message) error {
+		logger := zapctx.Extract(ctx)
 		logLevel := m.Attributes.Get(zapctx.LogLevelKey)
 		if logLevel != "" {
-			logger := zapctx.Extract(ctx)
 			logger = logger.WithOptions(
 				zap.WrapCore(func(core zapcore.Core) zapcore.Core {
 					return zapctx.NewCore(zapctx.ZapLevel(logLevel), "stdout")
@@ -24,6 +24,8 @@ func Receiver(next msg.Receiver) msg.Receiver {
 		}
 		traceID := m.Attributes.Get(zapctx.TraceIDKey)
 		if traceID != "" {
+			logger = logger.With(zap.String(zapctx.TraceIDKey, traceID))
+			ctx = zapctx.With(ctx, logger)
 			ctx = context.WithValue(ctx, zapctx.TraceIDKey, traceID)
 		}
 		return next.Receive(ctx, m)
