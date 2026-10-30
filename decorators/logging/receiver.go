@@ -12,16 +12,16 @@ import (
 )
 
 // Receiver reads the log level and trace ID attributes off each message and
-// stores both on the context. When a level is set, it also replaces the context's
-// logger with a new stdout logger at that level.
+// stores both on the context. When a level is set, it also overrides the level of
+// the context's logger, keeping its sink and fields.
 func Receiver(next msg.Receiver) msg.Receiver {
 	return msg.ReceiverFunc(func(ctx context.Context, m *msg.Message) error {
 		logger := zapctx.Extract(ctx)
 		logLevel := m.Attributes.Get(zapctx.LogLevelKey)
 		if logLevel != "" {
 			logger = logger.WithOptions(
-				zap.WrapCore(func(_ zapcore.Core) zapcore.Core {
-					return zapctx.NewCore(zapctx.ZapLevel(logLevel), "stdout")
+				zap.WrapCore(func(c zapcore.Core) zapcore.Core {
+					return zapctx.OverrideLevel(c, zapctx.ZapLevel(logLevel))
 				}),
 			)
 			ctx = zapctx.With(ctx, logger)

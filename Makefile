@@ -9,9 +9,9 @@ test:
 	go test -race -v ./...
 
 tools:
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(GOPATH)/bin v1.17.0
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v2.13.1
 
-fmt: tools
+fmt:
 	go fmt $(PACKAGES)
 
 .PHONY: help lint test fmt tools

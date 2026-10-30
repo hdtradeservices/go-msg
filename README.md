@@ -1,7 +1,6 @@
 # go-msg
 
-[![GoDoc](https://godoc.org/github.com/zerofox-oss/go-msg?status.svg)](http://godoc.org/github.com/zerofox-oss/go-msg)
-[![Build Status](https://travis-ci.org/zerofox-oss/go-msg.svg?branch=master)](https://travis-ci.org/zerofox-oss/go-msg)
+[![Go Reference](https://pkg.go.dev/badge/github.com/hdtradeservices/go-msg.svg)](https://pkg.go.dev/github.com/hdtradeservices/go-msg)
 
 **Pub/Sub Message Primitives for Go**
 
@@ -32,7 +31,7 @@ that are currently supported:
 
 | Backend       | Link     |
 | :------------- | :------------- |
-| Channels  | https://github.com/zerofox-oss/go-msg/backends/mem |
+| Channels  | https://github.com/hdtradeservices/go-msg/tree/master/backends/mem |
 | AWS (SNS,SQS) | https://github.com/zerofox-oss/go-aws-msg |
 | Google PubSub | https://github.com/paultyng/go-msg-pubsub |
 

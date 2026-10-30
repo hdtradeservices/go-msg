@@ -7,6 +7,10 @@ import (
 	"github.com/hdtradeservices/go-msg"
 	"github.com/hdtradeservices/go-msg/decorators/logging"
 	"github.com/hdtradeservices/go-test/assert"
+	"github.com/hdtradeservices/zapctx/zapctx"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"go.uber.org/zap/zaptest/observer"
 )
 
 type ChanReceiver struct {
@@ -56,4 +60,26 @@ func Test_LogLevel_LevelSet(t *testing.T) {
 
 	err := r.Receive(ctx, m)
 	assert.NoError(err)
+}
+
+// Test_LogLevel_KeepsSink asserts that a message's log level lowers the
+// threshold of the context's logger without replacing its sink or fields.
+func Test_LogLevel_KeepsSink(t *testing.T) {
+	assert := assert.New(t)
+	core, logs := observer.New(zapcore.WarnLevel)
+	ctx := zapctx.With(context.Background(), zap.New(core).With(zap.String("service", "test")))
+
+	attrs := msg.Attributes{}
+	attrs.Set(zapctx.LogLevelKey, "DEBUG")
+	r := logging.Receiver(msg.ReceiverFunc(func(ctx context.Context, _ *msg.Message) error {
+		zapctx.Extract(ctx).Debug("debug line")
+		return nil
+	}))
+	assert.NoError(r.Receive(ctx, &msg.Message{Attributes: attrs}))
+
+	entries := logs.FilterMessage("debug line").All()
+	assert.Equal(1, len(entries))
+	if len(entries) == 1 {
+		assert.Equal("test", entries[0].ContextMap()["service"])
+	}
 }
