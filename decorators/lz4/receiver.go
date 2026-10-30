@@ -1,3 +1,4 @@
+// Package lz4 provides decorators that lz4-compress and decompress message bodies.
 package lz4
 
 import (
@@ -9,7 +10,7 @@ import (
 
 // Decoder wraps a msg.Receiver with lz4 decoding functionality.
 // It only attempts to decode the Message.Body if Content-Encoding
-// is set to lz4. This should be used in conjuction with the base64
+// is set to lz4. This should be used in conjunction with the base64
 // decode decorator, when the message queue doesn't support binary.
 // In this case the base64 decorator should be the outermost decorator
 // in order to run first.

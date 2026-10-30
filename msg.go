@@ -1,3 +1,5 @@
+// Package msg defines the Message type and the Receiver, Server, Topic and
+// MessageWriter interfaces that the backends and decorators in this module implement.
 package msg
 
 import (

@@ -1,6 +1,42 @@
-linters:
-  enable-all: true
+version: "2"
+
 run:
-  skip-dirs:
-    - vendor
-  tests: false
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  # v1 names that no longer exist: golint -> revive, gosimple -> staticcheck,
+  # vetshadow -> govet's shadow check.
+  default: none
+  enable:
+    - govet
+    - misspell
+    - revive
+    - staticcheck
+  settings:
+    govet:
+      enable:
+        - shadow
+    staticcheck:
+      # Same scope as zql-go: v1's gosimple never ran QF* (it was S1* only).
+      checks: ["all", "-QF*"]
+  exclusions:
+    rules:
+      # zapctx's LogLevelKey and TraceIDKey are plain strings, and the logging
+      # decorator must store values under those exact keys for zapctx to find them.
+      - path: decorators/logging/
+        linters: [revive]
+        text: "context-keys-type"
+      - path: decorators/logging/
+        linters: [staticcheck]
+        text: "SA1029"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+issues:
+  # Report every finding rather than stopping at the default per-linter and per-message caps.
+  max-issues-per-linter: 0
+  max-same-issues: 0

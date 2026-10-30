@@ -1,3 +1,4 @@
+// Package base64 provides decorators that base64-encode and decode message bodies.
 package base64
 
 import (
