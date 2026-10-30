@@ -3,7 +3,7 @@ package base64
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/hdtradeservices/go-msg"
@@ -13,7 +13,7 @@ type ChanReceiver struct {
 	c chan *msg.Message
 }
 
-func (r ChanReceiver) Receive(ctx context.Context, m *msg.Message) error {
+func (r ChanReceiver) Receive(_ context.Context, m *msg.Message) error {
 	r.c <- m
 	return nil
 }
@@ -42,7 +42,7 @@ func TestDecoder_SuccessfullyDecodesWhenHeaderIsSet(t *testing.T) {
 		result := <-msgChan
 
 		expectedBody := "abc123"
-		actual, _ := ioutil.ReadAll(result.Body)
+		actual, _ := io.ReadAll(result.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -82,7 +82,7 @@ func TestDecoder_DoesNotModifyMessageWithoutAppropriateHeader(t *testing.T) {
 		result := <-msgChan
 
 		expectedBody := "abc123"
-		actual, _ := ioutil.ReadAll(result.Body)
+		actual, _ := io.ReadAll(result.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}

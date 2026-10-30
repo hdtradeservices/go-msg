@@ -19,7 +19,7 @@ type ConcurrentReceiver struct {
 	C chan struct{}
 }
 
-func (r *ConcurrentReceiver) Receive(ctx context.Context, m *msg.Message) error {
+func (r *ConcurrentReceiver) Receive(ctx context.Context, _ *msg.Message) error {
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
@@ -42,7 +42,7 @@ type RetryReceiver struct {
 	calls          int
 }
 
-func (r *RetryReceiver) Receive(ctx context.Context, m *msg.Message) error {
+func (r *RetryReceiver) Receive(ctx context.Context, _ *msg.Message) error {
 	select {
 	case <-ctx.Done():
 		r.t.Fatalf("[ERROR] Receiver could not finish executing")
@@ -171,11 +171,11 @@ func TestServer_ServeCanRetryMessages(t *testing.T) {
 	}()
 
 	// after 10th retry receiver will write to channel
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	timeout, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	select {
-	case <-ctx.Done():
+	case <-timeout.Done():
 		t.Fatalf("context timed out")
 	case <-outputChannel:
 		close(outputChannel)
@@ -195,7 +195,7 @@ func TestServer_ShutdownContextTimeoutExceeded(t *testing.T) {
 	srv := mem.NewServer(make(chan *msg.Message, 1), 1)
 	defer close(srv.C)
 
-	receiver := msg.ReceiverFunc(func(ctx context.Context, m *msg.Message) error {
+	receiver := msg.ReceiverFunc(func(_ context.Context, _ *msg.Message) error {
 		defer close(done)
 
 		// set a fast timeout so srv doesn't have enough time to finish

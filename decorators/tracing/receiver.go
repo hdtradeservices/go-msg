@@ -12,19 +12,23 @@ import (
 const traceContextKey = "Tracecontext"
 const traceStateKey = "Tracestate"
 
+// Options configures the tracing decorators.
 type Options struct {
 	SpanName     string
 	StartOptions trace.StartOptions
 }
 
+// Option sets a field on Options.
 type Option func(*Options)
 
+// WithSpanName sets the name of the span the decorator starts.
 func WithSpanName(spanName string) Option {
 	return func(o *Options) {
 		o.SpanName = spanName
 	}
 }
 
+// WithStartOption sets the span start options. The decorators apply only its Sampler.
 func WithStartOption(so trace.StartOptions) Option {
 	return func(o *Options) {
 		o.StartOptions = so

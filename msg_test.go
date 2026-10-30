@@ -1,7 +1,7 @@
 package msg_test
 
 import (
-	"io/ioutil"
+	"io"
 	"net/textproto"
 	"os"
 	"reflect"
@@ -84,7 +84,7 @@ func TestCloneBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	bb, err := ioutil.ReadAll(b)
+	bb, err := io.ReadAll(b)
 	if err != nil {
 		t.Fatal(err)
 	}

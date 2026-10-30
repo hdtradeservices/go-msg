@@ -14,7 +14,7 @@ type ChanReceiver struct {
 	tid chan string
 }
 
-func (r ChanReceiver) Receive(ctx context.Context, m *msg.Message) error {
+func (r ChanReceiver) Receive(ctx context.Context, _ *msg.Message) error {
 	logLevel := ctx.Value("z-log-level").(string)
 	r.ll <- logLevel
 	traceID := ctx.Value("z-trace-id").(string)

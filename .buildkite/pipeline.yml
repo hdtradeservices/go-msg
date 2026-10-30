@@ -1,0 +1,21 @@
+# Entry point. `zt-ci plan go` diffs against the base branch and uploads only the
+# sub-pipelines the diff can affect.
+#
+# Checks only: this is a library, so there is no image to build and nothing to deploy.
+env:
+  CI_CACHE_BUCKET: "zt-ci-cache"
+
+steps:
+  - label: ":pipeline: plan"
+    key: plan
+    command: zt-ci plan go
+    agents:
+      queue: go
+    plugins:
+      - kubernetes:
+          podSpecPatch:
+            containers:
+              - name: container-0
+                envFrom:
+                  # GITHUB_TOKEN, so this step can fetch the base branch to diff against.
+                  - secretRef: { name: buildkite-ci-secrets }

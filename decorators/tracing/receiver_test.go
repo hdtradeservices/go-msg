@@ -5,7 +5,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -74,7 +74,7 @@ func TestDecoder_SuccessfullyDecodesSpanWhenTraceContextIsPresent(t *testing.T) 
 		result := <-msgChan
 
 		expectedBody := "hello"
-		actual, _ := ioutil.ReadAll(result.msg.Body)
+		actual, _ := io.ReadAll(result.msg.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -87,11 +87,11 @@ func TestDecoder_SuccessfullyDecodesSpanWhenTraceContextIsPresent(t *testing.T) 
 		receivedSC := span.SpanContext()
 
 		if receivedSC.TraceID != sc.TraceID {
-			t.Errorf(cmp.Diff(receivedSC.TraceID, sc.TraceID))
+			t.Error(cmp.Diff(receivedSC.TraceID, sc.TraceID))
 		}
 
 		if receivedSC.Tracestate != sc.Tracestate {
-			t.Errorf(cmp.Diff(receivedSC.TraceID, sc.TraceID))
+			t.Error(cmp.Diff(receivedSC.TraceID, sc.TraceID))
 		}
 
 		testFinish <- struct{}{}
@@ -128,7 +128,7 @@ func TestDecoder_SuccessfullySetsSpanWhenNoTraceContext(t *testing.T) {
 	go func() {
 		result := <-msgChan
 		expectedBody := "abc123"
-		actual, _ := ioutil.ReadAll(result.msg.Body)
+		actual, _ := io.ReadAll(result.msg.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -152,7 +152,7 @@ func TestDecoder_SuccessfullySetsSpanWhenNoTraceContext(t *testing.T) {
 
 // Tests that when a Receiver is wrapped by a Tracing Receiver, and
 // the message contains an invalid b64 encodeded tracecontext, a span
-// is still sucessfully set
+// is still successfully set
 func TestDecoder_SuccessfullySetsSpanWhenInvalidTraceContextB64(t *testing.T) {
 	testFinish := make(chan struct{})
 	msgChan := make(chan msgWithContext)
@@ -175,7 +175,7 @@ func TestDecoder_SuccessfullySetsSpanWhenInvalidTraceContextB64(t *testing.T) {
 	go func() {
 		result := <-msgChan
 		expectedBody := "abc123"
-		actual, _ := ioutil.ReadAll(result.msg.Body)
+		actual, _ := io.ReadAll(result.msg.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -199,7 +199,7 @@ func TestDecoder_SuccessfullySetsSpanWhenInvalidTraceContextB64(t *testing.T) {
 
 // Tests that when a Receiver is wrapped by a Tracing Receiver, and
 // the message contains an invalid binary encodeded tracecontext, a span
-// is still sucessfully set
+// is still successfully set
 func TestDecoder_SuccessfullySetsSpanWhenInvalidTraceContextBinary(t *testing.T) {
 	testFinish := make(chan struct{})
 	msgChan := make(chan msgWithContext)
@@ -223,7 +223,7 @@ func TestDecoder_SuccessfullySetsSpanWhenInvalidTraceContextBinary(t *testing.T)
 	go func() {
 		result := <-msgChan
 		expectedBody := "abc123"
-		actual, _ := ioutil.ReadAll(result.msg.Body)
+		actual, _ := io.ReadAll(result.msg.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -273,7 +273,7 @@ func TestDecoder_SuccessfullyDecodesSpanWhenTraceContextAndSpanIsPresent(t *test
 		result := <-msgChan
 
 		expectedBody := "hello"
-		actual, _ := ioutil.ReadAll(result.msg.Body)
+		actual, _ := io.ReadAll(result.msg.Body)
 		if string(actual) != expectedBody {
 			t.Errorf("Expected Body to be %v, got %v", expectedBody, string(actual))
 		}
@@ -286,7 +286,7 @@ func TestDecoder_SuccessfullyDecodesSpanWhenTraceContextAndSpanIsPresent(t *test
 		receivedSC := span.SpanContext()
 
 		if receivedSC.TraceID != sc.TraceID {
-			t.Errorf(cmp.Diff(receivedSC.TraceID, sc.TraceID))
+			t.Error(cmp.Diff(receivedSC.TraceID, sc.TraceID))
 		}
 
 		if receivedSC.Tracestate == nil {

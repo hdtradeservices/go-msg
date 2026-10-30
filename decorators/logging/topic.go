@@ -7,6 +7,8 @@ import (
 	"github.com/hdtradeservices/zapctx/zapctx"
 )
 
+// Topic copies the context's log level and trace ID onto each outgoing
+// message as attributes.
 func Topic(next msg.Topic) msg.Topic {
 	return msg.TopicFunc(func(ctx context.Context) msg.MessageWriter {
 		w := next.NewWriter(ctx)

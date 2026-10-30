@@ -1,3 +1,4 @@
+// Package mem is an in-memory msg backend built on Go channels.
 package mem
 
 import (
@@ -32,7 +33,7 @@ var _ msg.Server = &Server{}
 
 // Serve always returns a non-nil error.
 // After Shutdown, the returned error is ErrServerClosed
-func (s *Server) Serve(ctx context.Context, r msg.Receiver) error {
+func (s *Server) Serve(_ context.Context, r msg.Receiver) error {
 	for {
 		select {
 		case <-s.listenerCtx.Done():
